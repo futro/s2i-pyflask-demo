@@ -29,9 +29,9 @@ def get_message():
     #test_logger.addHandler(logstash.LogstashHandler(host, 5959, version=1))
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
 
-    test_logger.error('python-logstash: test logstash error message.')
-    test_logger.info('python-logstash: test logstash info message.')
-    test_logger.warning('python-logstash: test logstash warning message.')
+    test_logger.error('futro-python-logstash: test logstash error message.')
+    test_logger.info('futro-python-logstash: test logstash info message.')
+    test_logger.warning('futro-python-logstash: test logstash warning message.')
 
 # add extra field to logstash message
     extra = {
@@ -42,7 +42,7 @@ def get_message():
        'test_integer': 123,
        'test_list': [1, 2, '3'],
     }
-    test_logger.info('python-logstash: test extra fields', extra=extra)
+    test_logger.info('futro-python-logstash: test extra fields', extra=extra)
     
     return '<h1>Log message</h1>'
 
