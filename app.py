@@ -8,7 +8,7 @@ from flask import Flask
 app = Flask(__name__)
 test_logger = logging.getLogger('python-logstash-logger')
 test_logger.setLevel(logging.INFO)
-host = 'logstash-client.ex.svc.cloud.local'
+host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
 
