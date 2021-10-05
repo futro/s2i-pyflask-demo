@@ -3,8 +3,14 @@ import logging
 import logstash
 import sys
 from flask import Flask
-app = Flask(__name__)
 
+
+app = Flask(__name__)
+test_logger = logging.getLogger('python-logstash-logger')
+test_logger.setLevel(logging.INFO)
+host = 'logstash-client.ex.svc.cloud.local'
+port_number = 5000
+ 
 
 @app.route('/')
 def hello_world():
@@ -18,19 +24,10 @@ def get_version():
 def get_test():
     return '<h1>You are accessing /test endpoint</h1>'
 
-
-
-
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
-    host = 'localhost'
-
-    test_logger = logging.getLogger('python-logstash-logger')
-    test_logger.setLevel(logging.INFO)
-    test_logger.addHandler(logstash.LogstashHandler(host, 5959, version=1))
-# test_logger.addHandler(logstash.TCPLogstashHandler(host, 5959, version=1))
+@app.route('/message')
+def get_message():
+    #test_logger.addHandler(logstash.LogstashHandler(host, 5959, version=1))
+    test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
 
     test_logger.error('python-logstash: test logstash error message.')
     test_logger.info('python-logstash: test logstash info message.')
@@ -46,4 +43,14 @@ if __name__ == "__main__":
        'test_list': [1, 2, '3'],
     }
     test_logger.info('python-logstash: test extra fields', extra=extra)
+    
+    return '<h1>Log message</h1>'
+
+
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
+    
+    
    
