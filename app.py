@@ -78,16 +78,15 @@ def get_consumer():
         msg = consumer.poll(1.0)
         if msg is None:
             test_logger.info('No message')
-        if msg.error():
-                    test_logger.error(msg.error())
-                else:
-                    # Proper message
-                    test_logger.info('%% %s [%d] at offset %d with key %s:\n' %
+        else:
+            if msg.error():
+                test_logger.error(msg.error())
+            else:
+                # Proper message
+                test_logger.info('%% %s [%d] at offset %d with key %s:\n' %
                                      (msg.topic(), msg.partition(), msg.offset(),
                                       str(msg.key())))
-                    test_logger.info(msg.value())  
-
-
+                test_logger.info(msg.value())  
     consumer.close()
 
     return '<h1>Consumer</h1>'
