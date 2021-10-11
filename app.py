@@ -52,6 +52,7 @@ def get_message():
     return '<h1>Log message</h1>'
 
 def acked(err, msg):
+    test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
     if err is not None:
         test_logger.info("Failed to deliver message: %s: %s" % (str(msg), str(err)))
     else:
