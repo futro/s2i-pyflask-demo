@@ -13,9 +13,8 @@ test_logger.setLevel(logging.INFO)
 host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
+kafka_host =  "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092"
  
-conf = {'bootstrap.servers': "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092"}
-       # 'client.id': socket.gethostname()}
 topic = "futro-test-topic"
 @app.route('/')
 def hello_world():
@@ -62,6 +61,9 @@ def acked(err, msg):
 
 @app.route('/producer')
 def get_producer():
+    conf = {'bootstrap.servers': kafka_host,
+       'client.id': socket.gethostname()}
+
     producer = Producer(conf)
     producer.produce(topic, key="key", value="value", callback=acked)
     producer.flush()
@@ -71,6 +73,10 @@ def get_producer():
 
 @app.route('/consumer')
 def get_consumer():
+ 
+    conf = {'bootstrap.servers': kafka_host,
+       'group.id': socket.gethostname()}
+
     consumer = Consumer(conf)
     #consumer.subscribe([topic])
     #test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
