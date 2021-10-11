@@ -3,7 +3,7 @@ import logging
 import logstash
 import sys
 from flask import Flask
-from confluent_kafka import Producer
+from confluent_kafka import Producer, Consumer
 import socket
 
 
@@ -14,7 +14,7 @@ host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
  
-conf = {'bootstrap.servers': "host1:9092,host2:9092",
+conf = {'bootstrap.servers': "logstash-client.ex.svc.cluster.local:9092",
         'client.id': socket.gethostname()}
 
 
@@ -62,18 +62,23 @@ def acked(err, msg):
 
 @app.route('/producer')
 def get_producer():
- 
-
     producer = Producer(conf)
     message_ack = producer.produce("futro-test-topic", key="key", value="value", callback=acked)
-
+    producer.flush()
+    
     return '<h1>'+message_ack+'</h1>'
 
 
 @app.route('/consumer')
 def get_consumer():
-    
-    return '<h1>Producer message</h1>'
+    consumer = Consumer(conf)
+    msg = consumer.poll(1.0)
+    if msg is not None:
+        test_logger.info('futro-python-logstash: test from consumer fields', extra=msg)
+      
+    consumer.close()
+
+    return '<h1>'+msg+'</h1>'
 
 
 
