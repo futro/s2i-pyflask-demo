@@ -71,9 +71,9 @@ def get_producer():
 
 @app.route('/consumer')
 def get_consumer():
-    consumer = Consumer(conf)
-    consumer.subscribe([topic])
-    test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
+    #consumer = Consumer(conf)
+    #consumer.subscribe([topic])
+    #test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
     # for i in range(100):
     #     msg = consumer.poll(1.0)
     #     if msg is None:
@@ -87,7 +87,7 @@ def get_consumer():
     #                                  (msg.topic(), msg.partition(), msg.offset(),
     #                                   str(msg.key())))
     #             test_logger.info(msg.value())  
-    consumer.close()
+    #consumer.close()
 
     return '<h1>Consumer</h1>'
 
