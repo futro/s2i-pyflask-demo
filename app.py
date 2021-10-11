@@ -16,8 +16,7 @@ port_number = 5000
  
 conf = {'bootstrap.servers': "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092",
         'client.id': socket.gethostname()}
-
-
+topic = "futro-test-topic"
 @app.route('/')
 def hello_world():
     return '<h1>Hello, World ! - Pyflask Demo</h1>'
@@ -63,7 +62,7 @@ def acked(err, msg):
 @app.route('/producer')
 def get_producer():
     producer = Producer(conf)
-    producer.produce("futro-test-topic", key="key", value="value", callback=acked)
+    producer.produce(topic, key="key", value="value", callback=acked)
     producer.flush()
     
     return '<h1>Producer</h1>'
@@ -72,6 +71,7 @@ def get_producer():
 @app.route('/consumer')
 def get_consumer():
     consumer = Consumer(conf)
+    consumer.subscribe([topic])
     msg = consumer.poll(1.0)
     if msg is not None:
         test_logger.info('futro-python-logstash: test from consumer fields', extra=msg)
