@@ -14,7 +14,7 @@ host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
  
-conf = {'bootstrap.servers': "a1-zookeeper-0.a1-zookeeper-headless.ex.svc.cluster.local:9092",
+conf = {'bootstrap.servers': "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092",
         'client.id': socket.gethostname()}
 
 
