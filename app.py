@@ -53,9 +53,9 @@ def get_message():
 
 def acked(err, msg):
     if err is not None:
-        return ("Failed to deliver message: %s: %s" % (str(msg), str(err)))
+        test_logger.info("Failed to deliver message: %s: %s" % (str(msg), str(err)))
     else:
-        return ("Message produced: %s" % (str(msg)))
+        test_logger.info("Message produced: %s" % (str(msg)))
 
    
 
@@ -65,7 +65,7 @@ def get_producer():
     ack = producer.produce(topic, key="key", value="value", callback=acked)
     producer.flush()
     
-    return '<h1>'+ack+' Producer</h1>'
+    return '<h1>Producer</h1>'
 
 
 @app.route('/consumer')
