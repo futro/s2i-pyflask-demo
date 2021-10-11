@@ -14,8 +14,8 @@ host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
  
-conf = {'bootstrap.servers': "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092",
-        'client.id': socket.gethostname()}
+conf = {'bootstrap.servers': "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092"}
+       # 'client.id': socket.gethostname()}
 topic = "futro-test-topic"
 @app.route('/')
 def hello_world():
@@ -63,7 +63,7 @@ def acked(err, msg):
 @app.route('/producer')
 def get_producer():
     producer = Producer(conf)
-    ack = producer.produce(topic, key="key", value="value", callback=acked)
+    producer.produce(topic, key="key", value="value", callback=acked)
     producer.flush()
     
     return '<h1>Producer</h1>'
