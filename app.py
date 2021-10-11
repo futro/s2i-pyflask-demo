@@ -3,6 +3,8 @@ import logging
 import logstash
 import sys
 from flask import Flask
+from confluent_kafka import Producer
+import socket
 
 
 app = Flask(__name__)
@@ -11,6 +13,10 @@ test_logger.setLevel(logging.INFO)
 host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
+ 
+conf = {'bootstrap.servers': "host1:9092,host2:9092",
+        'client.id': socket.gethostname()}
+
 
 @app.route('/')
 def hello_world():
@@ -46,6 +52,28 @@ def get_message():
     
     return '<h1>Log message</h1>'
 
+def acked(err, msg):
+    if err is not None:
+        return ("Failed to deliver message: %s: %s" % (str(msg), str(err)))
+    else:
+        return ("Message produced: %s" % (str(msg)))
+
+   
+
+@app.route('/producer')
+def get_producer():
+ 
+
+    producer = Producer(conf)
+    message_ack = producer.produce("futro-test-topic", key="key", value="value", callback=acked)
+
+    return '<h1>'+message_ack+'</h1>'
+
+
+@app.route('/consumer')
+def get_consumer():
+    
+    return '<h1>Producer message</h1>'
 
 
 
