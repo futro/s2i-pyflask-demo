@@ -71,7 +71,7 @@ def get_producer():
 
 @app.route('/consumer')
 def get_consumer():
-    #consumer = Consumer(conf)
+    consumer = Consumer(conf)
     #consumer.subscribe([topic])
     #test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
     # for i in range(100):
