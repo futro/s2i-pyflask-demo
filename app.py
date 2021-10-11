@@ -74,7 +74,7 @@ def get_consumer():
     consumer = Consumer(conf)
     consumer.subscribe([topic])
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
-    for i in range(0:100):
+    for i in range(100):
         msg = consumer.poll(1.0)
         if msg is None:
             test_logger.info('No message')
