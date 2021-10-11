@@ -78,22 +78,22 @@ def get_consumer():
        'group.id': socket.gethostname()}
 
     consumer = Consumer(conf)
-    #consumer.subscribe([topic])
-    #test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
-    # for i in range(100):
-    #     msg = consumer.poll(1.0)
-    #     if msg is None:
-    #         test_logger.info('No message')
-    #     else:
-    #         if msg.error():
-    #             test_logger.error(msg.error())
-    #         else:
-    #             # Proper message
-    #             test_logger.info('%% %s [%d] at offset %d with key %s:\n' %
-    #                                  (msg.topic(), msg.partition(), msg.offset(),
-    #                                   str(msg.key())))
-    #             test_logger.info(msg.value())  
-    #consumer.close()
+    consumer.subscribe([topic])
+    test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
+    for i in range(100):
+        msg = consumer.poll(1.0)
+        if msg is None:
+            test_logger.info('No message')
+        else:
+            if msg.error():
+                test_logger.error(msg.error())
+            else:
+                # Proper message
+                test_logger.info('%% %s [%d] at offset %d with key %s:\n' %
+                                     (msg.topic(), msg.partition(), msg.offset(),
+                                      str(msg.key())))
+                test_logger.info(msg.value())  
+    consumer.close()
 
     return '<h1>Consumer</h1>'
 
