@@ -62,7 +62,7 @@ def acked(err, msg):
 @app.route('/producer')
 def get_producer():
     conf = {'bootstrap.servers': kafka_host,
-       'client.id': socket.gethostname()}
+       'client.id': 'futro-test'} #socket.gethostname()}
 
     producer = Producer(conf)
     producer.produce(topic, key="key", value="value", callback=acked)
@@ -75,7 +75,7 @@ def get_producer():
 def get_consumer():
  
     conf = {'bootstrap.servers': kafka_host,
-       'group.id': socket.gethostname()}
+       'group.id': 'futro-test'} #socket.gethostname()}
 
     consumer = Consumer(conf)
     consumer.subscribe([topic])
