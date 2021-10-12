@@ -74,12 +74,12 @@ def get_producer():
 @app.route('/consumer')
 def get_consumer():
  
-    conf = {'bootstrap.servers': kafka_host,
+    conf = {'bootstrap.servers': kafka_host, 'session.timeout.ms': 6000,
        'group.id': 'futro-test'} #socket.gethostname()}
-
-    consumer = Consumer(conf)
-    consumer.subscribe([topic])
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
+    consumer = Consumer(conf,  logger=test_logger)
+    consumer.subscribe([topic])
+    
     for i in range(100):
         msg = consumer.poll(1.0)
         if msg is None:
