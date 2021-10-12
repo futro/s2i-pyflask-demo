@@ -60,7 +60,7 @@ def get_topic():
                   # Number-of-replicas    = 1
     kafka_admin.create_topics([new_topic,]) # CREATE (a list(), so you can create multiple).
     
-    return "<h1> Topic Created" +pprint.pprint(kafka_admin.list_topics().topics)+"</h1>"
+    return "<h1> Topic Created" +' '.join(kafka_admin.list_topics().topics)+"</h1>"
    
 def acked(err, msg):
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
