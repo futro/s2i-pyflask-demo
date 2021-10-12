@@ -5,7 +5,7 @@ import sys
 from flask import Flask
 from confluent_kafka import Producer, Consumer
 import socket
-
+import confluent_kafka.admin, pprint
 
 app = Flask(__name__)
 test_logger = logging.getLogger('python-logstash-logger')
@@ -13,7 +13,7 @@ test_logger.setLevel(logging.INFO)
 host = 'logstash-client.ex.svc.cluster.local'
 port_number = 5000
  
-kafka_host =  "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092"
+kafka_host =  "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092, a1-kafka-1.a1-kafka-headless.ex.svc.cluster.local:9092, a1-kafka-3.a1-kafka-headless.ex.svc.cluster.local:9092"
  
 topic = "futro-test-topic"
 @app.route('/')
@@ -50,14 +50,24 @@ def get_message():
     
     return '<h1>Log message</h1>'
 
+
+@app.route('/topic')
+def get_topic():
+    conf        = {'bootstrap.servers': kafka_host}
+    kafka_admin = confluent_kafka.admin.AdminClient(conf)
+    new_topic   = confluent_kafka.admin.NewTopic(topic, 1, 3)
+                  # Number-of-partitions  = 1
+                  # Number-of-replicas    = 1
+    kafka_admin.create_topics([new_topic,]) # CREATE (a list(), so you can create multiple).
+    
+    return "<h1> Topic Created" +pprint.pprint(kafka_admin.list_topics().topics)+'</h1>"
+   
 def acked(err, msg):
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
     if err is not None:
         test_logger.info("Failed to deliver message: %s: %s" % (str(msg), str(err)))
     else:
         test_logger.info("Message produced: %s" % (str(msg)))
-
-   
 
 @app.route('/producer')
 def get_producer():
