@@ -85,7 +85,7 @@ def get_producer():
 def get_consumer():
  
     conf = {'bootstrap.servers': kafka_host, 'session.timeout.ms': 6000,
-       'group.id': 'console-consumer-81494'} #socket.gethostname()}
+       'group.id': 'KMOffsetCache-kafka-manager-5c678c8b7d-8x68h'} #socket.gethostname()}
     test_logger.addHandler(logstash.TCPLogstashHandler(host, port_number, version=1))
     consumer = Consumer(conf,  logger=test_logger)
     consumer.subscribe([topic])
