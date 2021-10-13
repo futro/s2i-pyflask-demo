@@ -15,7 +15,7 @@ port_number = 5000
  
 kafka_host =  "a1-kafka-0.a1-kafka-headless.ex.svc.cluster.local:9092, a1-kafka-1.a1-kafka-headless.ex.svc.cluster.local:9092, a1-kafka-3.a1-kafka-headless.ex.svc.cluster.local:9092"
  
-topic = "futro-test-topic"
+topic = "futro.test.topic"
 @app.route('/')
 def hello_world():
     return '<h1>Hello, World ! - Pyflask Demo</h1>'
